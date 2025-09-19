@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run active C with OSQP",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+      "cwd": "${workspaceFolder}",
+      "environment": [
+        { "name": "LD_LIBRARY_PATH", "value": "${env:HOME}/.local/lib${env:LD_LIBRARY_PATH:+:${env:LD_LIBRARY_PATH}}" }
+      ],
+      "MIMode": "gdb",
+      "preLaunchTask": "build-active-c-with-osqp"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "cmake.cmakePath": "${env:HOME}/bin/cmake-4.1.1-linux-x86_64/bin/cmake",
+  "cmake.buildDirectory": "${workspaceFolder}/build",
+  "cmake.generator": "Unix Makefiles",
+
+  // <-- This is the key line
+  "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+
+  // Nice-to-have: fallback include path if a file isn't in a CMake target
+  "C_Cpp.default.includePath": [
+    "${workspaceFolder}/include",
+    "${workspaceFolder}/**",
+    "${env:HOME}/.local/include"
+  ],
+  "files.associations": {
+    "type_traits": "c"
+  }
+}

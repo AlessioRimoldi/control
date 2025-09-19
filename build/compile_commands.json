@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/r/Code/control/build",
+  "command": "/usr/bin/gcc  -I/home/r/.local/include -g -o CMakeFiles/controller.dir/src/test_osqp.c.o -c /home/r/Code/control/src/test_osqp.c",
+  "file": "/home/r/Code/control/src/test_osqp.c",
+  "output": "CMakeFiles/controller.dir/src/test_osqp.c.o"
+}
+]
