@@ -1,3 +1,0 @@
-/home/r/Code/control/build/CMakeFiles/controller.dir
-/home/r/Code/control/build/CMakeFiles/edit_cache.dir
-/home/r/Code/control/build/CMakeFiles/rebuild_cache.dir

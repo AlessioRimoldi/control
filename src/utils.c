@@ -1,3 +1,5 @@
+#include "utils.h"
+
 int next_2_power(int num) {
     int v = num;
     v--;

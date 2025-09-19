@@ -1,4 +1,4 @@
-#include <osqp/osqp.h>
+#include <osqp.h>
 #include <stdio.h>
 
 int main(void) {

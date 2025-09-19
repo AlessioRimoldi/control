@@ -1,0 +1,29 @@
+# CMake build dirs (VS Code, CLion, etc.)
+/build/
+/build-*/
+/cmake-build-*/
+
+# CMake files
+/CMakeFiles/
+/CMakeCache.txt
+/Makefile
+/install_manifest.txt
+/compile_commands.json
+
+# Objects & libs
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.pdb
+
+# Ninja
+/.ninja_deps
+/.ninja_log
+
+# OSQP submodule’s in-tree output (optional; avoids local noise)
+external/osqp/out/

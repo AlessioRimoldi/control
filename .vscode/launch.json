@@ -2,16 +2,24 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run active C with OSQP",
+      "name": "Run: control (CMake)",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+      "program": "${command:cmake.launchTargetPath}",
       "cwd": "${workspaceFolder}",
-      "environment": [
-        { "name": "LD_LIBRARY_PATH", "value": "${env:HOME}/.local/lib${env:LD_LIBRARY_PATH:+:${env:LD_LIBRARY_PATH}}" }
-      ],
       "MIMode": "gdb",
-      "preLaunchTask": "build-active-c-with-osqp"
+      "miDebuggerPath": "/usr/bin/gdb",
+      "stopAtEntry": false
+    },
+    {
+      "name": "Run: test_osqp (CMake)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/test_osqp",
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "stopAtEntry": false
     }
   ]
 }

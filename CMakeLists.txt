@@ -1,37 +1,47 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.20)
 project(control C)
 
-# Where you installed OSQP
-set(OSQP_PREFIX "$ENV{HOME}/.local")
-set(OSQP_INCLUDE_DIR "${OSQP_PREFIX}/include")
-set(OSQP_LIB_DIR     "${OSQP_PREFIX}/lib")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 
-# Sanity checks so we fail with a clear message if paths are wrong
-if(NOT EXISTS "${OSQP_INCLUDE_DIR}/osqp/osqp.h")
-  message(FATAL_ERROR "Can't find ${OSQP_INCLUDE_DIR}/osqp/osqp.h. \
-Make sure OSQP is installed under ${OSQP_PREFIX} or adjust OSQP_PREFIX.")
+# Build OSQP statically (flip to ON if you want shared)
+set(BUILD_SHARED_LIBS OFF)
+option(OSQP_ENABLE_PROFILING "Enable OSQP profiling" OFF)
+option(OSQP_ENABLE_OPENMP    "Enable OpenMP in OSQP"   OFF)
+
+# Bring in OSQP from submodule
+add_subdirectory(external/osqp EXCLUDE_FROM_ALL)
+
+# Pick the right OSQP target name
+if(TARGET osqpstatic)
+  set(OSQP_TGT osqpstatic)
+else()
+  set(OSQP_TGT osqp)
 endif()
-if(NOT EXISTS "${OSQP_LIB_DIR}/libosqp.so" AND NOT EXISTS "${OSQP_LIB_DIR}/libosqp.a")
-  message(FATAL_ERROR "Can't find libosqp in ${OSQP_LIB_DIR}. \
-Make sure OSQP is installed under ${OSQP_PREFIX}.")
-endif()
 
-add_executable(controller src/test_osqp.c)
-
-# Headers at ~/.local/include/osqp/osqp.h
-target_include_directories(controller PRIVATE "${OSQP_INCLUDE_DIR}")
-
-# Linker finds libosqp in ~/.local/lib
-target_link_directories(controller PRIVATE "${OSQP_LIB_DIR}")
-target_link_libraries(controller PRIVATE osqp)
-
-# If you ever see unresolved QDLDL symbols, uncomment:
-# target_link_libraries(controller PRIVATE qdldl)
-
-# Make the exe find the shared lib at runtime without env vars
-set_target_properties(controller PROPERTIES
-  BUILD_RPATH "${OSQP_LIB_DIR}"
+# Your headers (so IntelliSense & compiler see include/)
+add_library(project_headers INTERFACE)
+target_include_directories(project_headers INTERFACE
+  ${CMAKE_SOURCE_DIR}/include
 )
 
-# (optional) emit compile_commands.json for debugging IntelliSense
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# ---- Executable 1: main app ----
+add_executable(control
+  src/main.c
+  src/utils.c          # <-- implement next_2_power here
+)
+target_link_libraries(control PRIVATE ${OSQP_TGT} project_headers)
+if(UNIX AND NOT APPLE)
+  target_link_libraries(control PRIVATE m)  # for sqrt()
+endif()
+
+# ---- Executable 2: OSQP test ----
+add_executable(test_osqp
+  src/test_osqp.c
+  src/utils.c
+)
+target_link_libraries(test_osqp PRIVATE ${OSQP_TGT} project_headers)
+if(UNIX AND NOT APPLE)
+  target_link_libraries(test_osqp PRIVATE m)
+endif()
